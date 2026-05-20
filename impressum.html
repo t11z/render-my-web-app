@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <title>Imprint – Render My Web App</title>
+  </head>
+  <body data-legal-page="impressum">
+    <main class="legal">
+      <div class="lang-row">
+        <a href="/" data-i18n="legal.back">← Back to the app</a>
+        <span class="lang">
+          <label for="lang-select" data-i18n="footer.language">Language</label>
+          <select id="lang-select"></select>
+        </span>
+      </div>
+
+      <article id="legal-content"></article>
+    </main>
+
+    <script type="module" src="/src/legal.ts"></script>
+  </body>
+</html>
