@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
-    "test": "vitest run"
+    "test": "vitest run",
+    "notices": "node scripts/generate-notices.mjs"
   },
   "dependencies": {
     "@codemirror/autocomplete": "^6.20.2",
