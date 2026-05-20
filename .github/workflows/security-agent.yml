@@ -1,0 +1,43 @@
+name: Weekly Security Agent (OWASP Top 10)
+
+on:
+  schedule:
+    - cron: '0 6 * * 1' # Mondays, 06:00 UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: write # create a fix branch
+  issues: write # open the findings issue
+  pull-requests: write # open the fix PR
+
+concurrency:
+  group: security-agent
+  cancel-in-progress: false
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Claude security review (OWASP Top 10)
+        uses: anthropics/claude-code-action@v1
+        env:
+          # Authenticates the `gh` CLI the agent uses to file the issue / fix PR.
+          GH_TOKEN: ${{ github.token }}
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          # Instructions live in .claude/commands/security-review.md (versioned,
+          # also runnable locally via `claude` then `/security-review`).
+          prompt: '/security-review'
+          claude_args: |
+            --model claude-opus-4-7
+            --max-turns 120
+            --allowedTools "Bash,Read,Edit,Write,Grep,Glob,WebFetch,WebSearch"
