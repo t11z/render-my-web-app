@@ -54,6 +54,23 @@ jobs:
                 fragment from `page_location`. See `src/analytics.ts`,
                 `src/cookieBanner.ts`.
 
+            ## Step 0 — triage existing work (do this FIRST)
+            Before analysing anything, list prior security work so you never
+            re-report or re-fix something already handled:
+            `gh issue list --label security --state all --limit 200` and
+            `gh pr list --state all --limit 200`. Then apply these rules:
+            - If a finding is already tracked by an existing `security` issue —
+              OPEN or CLOSED — do NOT open a duplicate issue and do NOT re-fix it.
+              A closed issue means it was resolved or deliberately rejected; leave
+              it alone.
+            - EXCEPTION: an OPEN `security` issue with NO assignee is fair game —
+              you MAY adopt it and open a fix PR for it (link via "Fixes #<n>");
+              do not create a new duplicate issue for it.
+            - An OPEN `security` issue that ALREADY has an assignee: skip it
+              (someone is working on it).
+            - If an open PR already addresses a finding/issue, skip it (no
+              duplicate PR).
+
             ## Tasks — do BOTH static and dynamic analysis
             1) STATIC analysis:
                - Review the source for OWASP Top 10 issues, focusing on:
@@ -89,27 +106,28 @@ jobs:
                    `vite preview` does not emit them, so assess them statically).
 
             ## Output — do all of the following
-            1) FILE ONE GitHub issue titled
-               "Weekly security review (OWASP Top 10) — <YYYY-MM-DD>".
-               - For each finding: OWASP category, severity (Critical/High/Medium/
-                 Low/Info), exact `path:line`, concrete impact, and a remediation.
+            1) For each genuinely NEW finding (not already tracked per Step 0),
+               FILE ONE GitHub issue titled
+               "Weekly security review (OWASP Top 10) — <YYYY-MM-DD>" listing them:
+               - Per finding: OWASP category, severity (Critical/High/Medium/Low/
+                 Info), exact `path:line`, concrete impact, and a remediation.
                - Include what was tested but found clean, plus the `npm audit`
-                 summary. If there are NO actionable findings, still file a short
-                 issue stating "no new findings" with the evidence — and then STOP
-                 (do not open a PR).
+                 summary.
                - Label the issue `security` (create the label first if missing,
                  e.g. `gh label create security --color D93F0B || true`).
-            2) If there ARE actionable findings, WRITE A FIX:
+               - If there are no new findings AND no adoptable issue (see Step 0),
+                 do NOT open a weekly duplicate issue — just conclude.
+            2) WRITE A FIX for actionable items — either your new findings or an
+               OPEN, UNASSIGNED `security` issue you adopted in Step 0:
                - Create a new branch (e.g. `security/owasp-fix-<YYYY-MM-DD>`) off
                  the default branch — never commit directly to `main`.
-               - Implement minimal, targeted fixes for the highest-severity
-                 findings (one focused PR; do not bundle unrelated refactors).
+               - Implement minimal, targeted fixes for the highest-severity items
+                 (one focused PR; do not bundle unrelated refactors).
                - Keep the project green: run `npm run lint`, `npm run typecheck`,
                  `npm test` and `npm run build` before opening the PR.
-               - Open a PR with `gh pr create`, label it `security`, and LINK it to
-                 the issue using a closing keyword in the body (e.g. "Fixes #<n>")
-                 so merging the PR closes the issue. Reference the issue number you
-                 created in step 1.
+               - Open the PR with `gh pr create`, label it `security`, and LINK it
+                 to the relevant issue with a closing keyword (e.g. "Fixes #<n>") —
+                 the new issue from step 1 OR the adopted existing issue.
             - Be precise and avoid false positives; this app intentionally runs
               untrusted code inside the sandbox — that is by design, not a bug.
 
