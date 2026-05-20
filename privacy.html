@@ -1,13 +1,13 @@
 <!doctype html>
-<html lang="de" data-theme="dark">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex" />
     <link rel="icon" href="/icon.svg" type="image/svg+xml" />
-    <title>Datenschutzerklärung – Render My Web App</title>
+    <title>Privacy Policy – Render My Web App</title>
   </head>
-  <body>
+  <body data-legal-page="privacy">
     <main class="legal">
       <div class="lang-row">
         <a href="/" data-i18n="legal.back">← Back to the app</a>
@@ -17,96 +17,7 @@
         </span>
       </div>
 
-      <h1>Datenschutzerklärung</h1>
-
-      <h2>1. Verantwortlicher</h2>
-      <p>
-        Thomas Sprock, Am Kleikamp 26, 31319 Sehnde, Deutschland. Kontakt siehe
-        <a href="/impressum.html">Impressum</a>.
-      </p>
-
-      <h2>2. Grundsatz: Zero Knowledge</h2>
-      <p>
-        Diese Anwendung ist eine reine Client-Anwendung. Der von dir eingegebene HTML-Code wird
-        ausschließlich lokal in deinem Browser verarbeitet und gerendert. <strong>Inhalte werden
-        nicht an unsere Server übertragen.</strong> Eine Speicherung erfolgt – sofern verfügbar – im
-        <code>localStorage</code> deines Browsers sowie optional im URL-Fragment (der Teil hinter
-        <code>#</code>). Das URL-Fragment wird von Browsern technisch <em>nicht</em> an Server
-        gesendet.
-      </p>
-
-      <h2>3. Hosting</h2>
-      <p>
-        Die statischen Dateien werden über Firebase Hosting (Google Ireland Limited / Google LLC)
-        ausgeliefert. Beim Abruf können serverseitig technisch notwendige Zugriffsdaten (z. B.
-        IP-Adresse, Zeitpunkt, angeforderte Datei) durch den Hoster verarbeitet werden. Weitere
-        Informationen:
-        <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener"
-          >Firebase Datenschutz</a
-        >.
-      </p>
-
-      <h2>4. Cookies und Google Analytics (nur mit Einwilligung)</h2>
-      <p>
-        Wir setzen Google Analytics 4 ausschließlich nach deiner ausdrücklichen Einwilligung über das
-        Cookie-Banner ein (Google Consent Mode v2; standardmäßig <code>denied</code>). Ohne
-        Einwilligung werden keine Analyse-Cookies gesetzt und keine Daten an Google übertragen.
-      </p>
-      <p>
-        Auch bei erteilter Einwilligung wird der von dir eingegebene Code <strong>nicht</strong> an
-        Google übermittelt: Die übertragene Seitenadresse (<code>page_location</code>) wird ohne das
-        URL-Fragment gesendet, sodass im Fragment gespeicherter HTML-Code Google nicht erreicht.
-      </p>
-      <p>
-        Deine Einwilligung kannst du jederzeit widerrufen, indem du die Website-Daten dieser Seite in
-        deinem Browser löschst (Eintrag <code>rmwa.consent</code>) und die Seite neu lädst. Anbieter:
-        Google Ireland Limited. Mehr:
-        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener"
-          >Google Datenschutzerklärung</a
-        >.
-      </p>
-
-      <h2>5. Spenden über Ko-fi</h2>
-      <p>
-        Der Spenden-Link führt zu einem externen Dienst (Ko-fi). Erst beim Klick wirst du zu Ko-fi
-        weitergeleitet; dort gelten die Datenschutzbestimmungen des Anbieters.
-      </p>
-
-      <h2>6. Deine Rechte</h2>
-      <p>
-        Dir stehen die Rechte auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung,
-        Datenübertragbarkeit sowie Widerspruch zu. Außerdem besteht ein Beschwerderecht bei einer
-        Datenschutz-Aufsichtsbehörde.
-      </p>
-
-      <h2>7. Open Source &amp; Transparenz</h2>
-      <p>
-        Dieses Projekt ist Open Source. Der gesamte Quellcode – einschließlich der
-        Datenverarbeitung im Browser – kann jederzeit eingesehen und überprüft werden:
-        <a href="https://github.com/t11z/render-my-web-app" target="_blank" rel="noopener"
-          >github.com/t11z/render-my-web-app</a
-        >.
-      </p>
-
-      <h2>Privacy summary (English)</h2>
-      <p>
-        This is a fully client-side app. Your HTML is processed only in your browser and is never
-        sent to our servers. Optional storage uses your browser's <code>localStorage</code> and the
-        URL fragment (which browsers never send to servers). Google Analytics runs only after you
-        explicitly accept the cookie banner, and even then your code is not transmitted: the reported
-        page address is sent without the URL fragment. This project is open source — you can
-        inspect the full code anytime at
-        <a href="https://github.com/t11z/render-my-web-app" target="_blank" rel="noopener"
-          >github.com/t11z/render-my-web-app</a
-        >.
-      </p>
-
-      <p>
-        <small
-          >Hinweis: Diese Datenschutzerklärung ist eine Vorlage und ersetzt keine Rechtsberatung.
-          Bitte vor Veröffentlichung fachkundig prüfen lassen.</small
-        >
-      </p>
+      <article id="legal-content"></article>
     </main>
 
     <script type="module" src="/src/legal.ts"></script>
