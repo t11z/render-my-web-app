@@ -1,0 +1,119 @@
+name: Weekly Security Agent (OWASP Top 10)
+
+on:
+  schedule:
+    - cron: '0 6 * * 1' # Mondays, 06:00 UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: write # create a fix branch
+  issues: write # open the findings issue
+  pull-requests: write # open the fix PR
+
+concurrency:
+  group: security-agent
+  cancel-in-progress: false
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Claude security review (OWASP Top 10)
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            You are an autonomous application-security agent. Perform a thorough
+            weekly security review of THIS repository against the OWASP Top 10
+            (2021) and file the results as a GitHub issue.
+
+            ## About the app (context)
+            - Fully client-side static web app: Vite + TypeScript + CodeMirror 6,
+              no backend. Deployed as static files on Firebase Hosting.
+            - Core security model to scrutinise:
+              - The live preview renders arbitrary user HTML/JS in an <iframe>
+                with `sandbox="allow-scripts ..."` and intentionally WITHOUT
+                `allow-same-origin` (opaque origin). See `src/preview.ts`.
+              - Security headers / CSP are defined in `firebase.json`.
+              - User content is kept only client-side: `localStorage` and the URL
+                fragment (`#code=`, lz-string compressed). See `src/share.ts`,
+                `src/storage.ts`.
+              - Optional Google Analytics is consent-gated and strips the URL
+                fragment from `page_location`. See `src/analytics.ts`,
+                `src/cookieBanner.ts`.
+
+            ## Tasks — do BOTH static and dynamic analysis
+            1) STATIC analysis:
+               - Review the source for OWASP Top 10 issues, focusing on:
+                 A03 Injection / DOM-XSS (uses of `innerHTML`, `srcdoc`,
+                 `document.write`, `eval`, `new Function`, unsanitised data from
+                 `location.hash`/`postMessage`), A05 Security Misconfiguration
+                 (the CSP in `firebase.json`, iframe `sandbox` flags, response
+                 headers, `target=_blank` rel), A08 Software/Data Integrity
+                 (GitHub Actions supply-chain, unpinned actions, missing SRI),
+                 A06 Vulnerable/Outdated Components, A02 Cryptographic Failures,
+                 A01 Broken Access Control, A04 Insecure Design, A10 SSRF.
+               - Run available scanners and capture output, e.g.:
+                 `npm audit --audit-level=low`, and if installable,
+                 `npx --yes semgrep --config=auto` (skip gracefully if it cannot
+                 be installed). Also `git grep -nE` for the dangerous-sink
+                 patterns above.
+            2) DYNAMIC analysis:
+               - Build and serve the app: `npm run build` then serve `dist`
+                 (e.g. `npx --yes vite preview --port 4173 &`).
+               - Drive it in a headless browser to verify runtime security.
+                 Install one if needed: `npx --yes playwright install --with-deps chromium`.
+                 Concretely verify:
+                 * Preview isolation: user code in the preview iframe CANNOT read
+                   the app's `localStorage`/cookies (`window.parent.localStorage`
+                   must throw a SecurityError) — confirm the sandbox has no
+                   `allow-same-origin`.
+                 * No exfiltration: content placed in `#code=` is not sent over
+                   the network by the app itself.
+                 * DOM-XSS: try to break out of the sandbox or inject into the
+                   PARENT document via the editor content, the `#code` fragment,
+                   and `postMessage` from the iframe.
+                 * Verify the `firebase.json` CSP/headers are coherent (note that
+                   `vite preview` does not emit them, so assess them statically).
+
+            ## Output — do all of the following
+            1) FILE ONE GitHub issue titled
+               "Weekly security review (OWASP Top 10) — <YYYY-MM-DD>".
+               - For each finding: OWASP category, severity (Critical/High/Medium/
+                 Low/Info), exact `path:line`, concrete impact, and a remediation.
+               - Include what was tested but found clean, plus the `npm audit`
+                 summary. If there are NO actionable findings, still file a short
+                 issue stating "no new findings" with the evidence — and then STOP
+                 (do not open a PR).
+               - Label the issue `security` (create the label first if missing,
+                 e.g. `gh label create security --color D93F0B || true`).
+            2) If there ARE actionable findings, WRITE A FIX:
+               - Create a new branch (e.g. `security/owasp-fix-<YYYY-MM-DD>`) off
+                 the default branch — never commit directly to `main`.
+               - Implement minimal, targeted fixes for the highest-severity
+                 findings (one focused PR; do not bundle unrelated refactors).
+               - Keep the project green: run `npm run lint`, `npm run typecheck`,
+                 `npm test` and `npm run build` before opening the PR.
+               - Open a PR with `gh pr create`, label it `security`, and LINK it to
+                 the issue using a closing keyword in the body (e.g. "Fixes #<n>")
+                 so merging the PR closes the issue. Reference the issue number you
+                 created in step 1.
+            - Be precise and avoid false positives; this app intentionally runs
+              untrusted code inside the sandbox — that is by design, not a bug.
+
+            ## Constraints
+            - Never push to `main`; all code changes go on the new branch via the PR.
+            - The fix PR must address findings from the issue only; keep it minimal.
+          claude_args: |
+            --model claude-opus-4-7
+            --max-turns 120
+            --allowedTools "Bash,Read,Edit,Write,Grep,Glob,WebFetch,WebSearch"
