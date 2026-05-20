@@ -23,26 +23,46 @@
     </header>
 
     <div class="toolbar">
-      <button id="btn-run" class="primary" data-i18n="toolbar.run">Run</button>
+      <button id="btn-run" class="primary" type="button">
+        <span class="icon" data-icon="play"></span><span class="label" data-i18n="toolbar.run">Run</span>
+      </button>
       <label>
         <input type="checkbox" id="toggle-autorun" />
         <span data-i18n="toolbar.autorun">Auto-run</span>
       </label>
       <span class="spacer"></span>
-      <button id="btn-share" data-i18n="toolbar.copylink">Copy share link</button>
-      <button id="btn-download" data-i18n="toolbar.download">Download</button>
-      <button id="btn-newtab" data-i18n="toolbar.newtab">Open in new tab</button>
-      <button id="btn-theme" data-i18n="toolbar.theme">Theme</button>
+      <button id="btn-share" type="button">
+        <span class="icon" data-icon="link"></span><span class="label" data-i18n="toolbar.copylink">Copy share link</span>
+      </button>
+      <button id="btn-download" type="button">
+        <span class="icon" data-icon="download"></span><span class="label" data-i18n="toolbar.download">Download</span>
+      </button>
+      <button id="btn-newtab" type="button">
+        <span class="icon" data-icon="new-tab"></span><span class="label" data-i18n="toolbar.newtab">Open in new tab</span>
+      </button>
+      <button id="btn-theme" type="button">
+        <span class="icon" data-theme-icon></span><span class="label" data-i18n="toolbar.theme">Theme</span>
+      </button>
     </div>
 
     <main class="workspace">
-      <section class="pane">
+      <section class="pane editor-pane">
         <div class="pane-header"><span data-i18n="label.editor">Editor</span></div>
         <div id="editor" data-i18n-attr="aria-label:aria.editor" aria-label="HTML code editor"></div>
       </section>
 
-      <section class="pane">
-        <div class="pane-header"><span data-i18n="label.preview">Preview</span></div>
+      <section class="pane preview-pane">
+        <div class="pane-header">
+          <span data-i18n="label.preview">Preview</span>
+          <button
+            id="btn-maximize"
+            class="btn-small icon-btn"
+            type="button"
+            data-i18n-attr="aria-label:toolbar.maximize;title:toolbar.maximize"
+          >
+            <span class="icon" data-icon="maximize"></span>
+          </button>
+        </div>
         <div class="preview-wrap">
           <iframe
             id="preview"
@@ -53,7 +73,9 @@
           <div class="console">
             <div class="pane-header">
               <span data-i18n="label.console">Console</span>
-              <button id="btn-clear-console" class="btn-small" data-i18n="toolbar.clear">Clear</button>
+              <button id="btn-clear-console" class="btn-small" type="button">
+                <span class="icon" data-icon="trash"></span><span data-i18n="toolbar.clear">Clear</span>
+              </button>
             </div>
             <div id="console-list"></div>
           </div>
