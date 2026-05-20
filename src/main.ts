@@ -1,4 +1,6 @@
 import './styles.css'
+import '@fontsource-variable/inter'
+import { applyIcons, setIcon } from './icons'
 import { initI18n, apply as applyI18n, mountLanguageSelect, t } from './i18n'
 import { initTheme, toggleTheme, isDark } from './theme'
 import { initConsentDefaults } from './analytics'
@@ -59,20 +61,49 @@ autorunToggle.addEventListener('change', () => {
   if (autoRun) render(editor.getContent())
 })
 
-byId('btn-theme').addEventListener('click', () => editor.setTheme(toggleTheme()))
+const themeIcon = byId('btn-theme').querySelector<HTMLElement>('[data-theme-icon]')
+function updateThemeIcon(dark: boolean): void {
+  if (themeIcon) setIcon(themeIcon, dark ? 'sun' : 'moon')
+}
+updateThemeIcon(isDark())
+byId('btn-theme').addEventListener('click', () => {
+  const dark = toggleTheme()
+  editor.setTheme(dark)
+  updateThemeIcon(dark)
+})
+
 byId('btn-download').addEventListener('click', () => downloadHtml(editor.getContent()))
 byId('btn-newtab').addEventListener('click', () => openInNewTab(editor.getContent()))
 byId('btn-clear-console').addEventListener('click', () => clearConsole(consoleList))
 
+const maximizeBtn = byId('btn-maximize')
+const maximizeIcon = maximizeBtn.querySelector<HTMLElement>('.icon')
+function setMaximized(on: boolean): void {
+  document.body.classList.toggle('preview-maximized', on)
+  maximizeBtn.setAttribute('aria-pressed', String(on))
+  maximizeBtn.setAttribute('aria-label', t(on ? 'toolbar.restore' : 'toolbar.maximize'))
+  maximizeBtn.setAttribute('title', t(on ? 'toolbar.restore' : 'toolbar.maximize'))
+  if (maximizeIcon) setIcon(maximizeIcon, on ? 'minimize' : 'maximize')
+}
+maximizeBtn.addEventListener('click', () =>
+  setMaximized(!document.body.classList.contains('preview-maximized')),
+)
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && document.body.classList.contains('preview-maximized')) {
+    setMaximized(false)
+  }
+})
+
 const shareBtn = byId('btn-share')
+const shareLabel = shareBtn.querySelector<HTMLElement>('.label')
 shareBtn.addEventListener('click', () => {
   navigator.clipboard
     .writeText(buildShareUrl(editor.getContent()))
     .then(() => {
-      const original = shareBtn.textContent
-      shareBtn.textContent = t('toolbar.copied')
+      if (!shareLabel) return
+      shareLabel.textContent = t('toolbar.copied')
       window.setTimeout(() => {
-        shareBtn.textContent = original
+        shareLabel.textContent = t('toolbar.copylink')
       }, 1500)
     })
     .catch(() => {
@@ -88,6 +119,7 @@ if (kofiHandle) {
   kofi.hidden = true
 }
 
+applyIcons()
 mountLanguageSelect(byId<HTMLSelectElement>('lang-select'))
 applyI18n()
 initCookieBanner()

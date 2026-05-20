@@ -19,12 +19,18 @@ function productionPackageDirs() {
     .filter((l) => l.includes('node_modules') && !l.includes('playwright'))
 }
 
-function workboxRuntimeDirs() {
+function extraShippedDirs() {
   const root = 'node_modules'
   if (!existsSync(root)) return []
-  return readdirSync(root)
+  // Workbox runtime is bundled into the generated service worker.
+  const dirs = readdirSync(root)
     .filter((name) => name.startsWith('workbox-') && name !== 'workbox-build' && name !== 'workbox-cli')
     .map((name) => `${process.cwd()}/${root}/${name}`)
+  // Heroicons artwork is inlined into src/icons.ts (it is a devDependency, so it
+  // is not part of the production tree, but the SVG paths ship with the app).
+  const heroicons = `${process.cwd()}/${root}/heroicons`
+  if (existsSync(heroicons)) dirs.push(heroicons)
+  return dirs
 }
 
 function findLicenseText(dir) {
@@ -36,7 +42,7 @@ function findLicenseText(dir) {
 }
 
 function collect() {
-  const dirs = [...new Set([...productionPackageDirs(), ...workboxRuntimeDirs()])]
+  const dirs = [...new Set([...productionPackageDirs(), ...extraShippedDirs()])]
   const packages = []
   for (const dir of dirs) {
     let pkg

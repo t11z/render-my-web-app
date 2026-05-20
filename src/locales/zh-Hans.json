@@ -9,6 +9,8 @@
   "toolbar.copylink": "复制分享链接",
   "toolbar.copied": "链接已复制！",
   "toolbar.clear": "清空",
+  "toolbar.maximize": "最大化预览",
+  "toolbar.restore": "还原预览",
   "label.editor": "编辑器",
   "label.preview": "预览",
   "label.console": "控制台",

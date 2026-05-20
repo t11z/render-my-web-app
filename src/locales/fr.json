@@ -9,6 +9,8 @@
   "toolbar.copylink": "Copier le lien",
   "toolbar.copied": "Lien copié !",
   "toolbar.clear": "Effacer",
+  "toolbar.maximize": "Agrandir l'aperçu",
+  "toolbar.restore": "Réduire l'aperçu",
   "label.editor": "Éditeur",
   "label.preview": "Aperçu",
   "label.console": "Console",
