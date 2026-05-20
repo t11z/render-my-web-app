@@ -108,6 +108,8 @@ your handle via `VITE_KOFI_HANDLE`).
 
 ## 📄 Legal & License
 
-Licensed under the [MIT License](./LICENSE). The app ships template `Impressum`
+Licensed under the [MIT License](./LICENSE). All bundled dependencies are MIT —
+their notices are reproduced in [THIRD-PARTY-NOTICES.md](./THIRD-PARTY-NOTICES.md)
+(regenerate with `npm run notices`). The app ships template `Impressum`
 (`impressum.html`) and privacy (`privacy.html`) pages — **please have them
 reviewed by a professional before going live.**
