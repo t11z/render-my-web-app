@@ -89,7 +89,8 @@ One-time setup:
    `FIREBASE_SERVICE_ACCOUNT`.
 4. (Optional) Add repository **variables** `VITE_GA_ID` and `VITE_KOFI_HANDLE`.
 
-Then:
+Until `FIREBASE_SERVICE_ACCOUNT` is set, the deploy step is **skipped** (so CI
+stays green); it activates automatically once the secret exists. Then:
 
 - Every PR gets a **preview channel** deploy (URL posted on the PR).
 - Every push to `main` deploys to the **live** channel.

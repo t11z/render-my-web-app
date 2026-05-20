@@ -12,6 +12,8 @@ jobs:
     # Skip on forked PRs: deploy secrets are not available to forks.
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     runs-on: ubuntu-latest
+    env:
+      FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -23,7 +25,10 @@ jobs:
         env:
           VITE_GA_ID: ${{ vars.VITE_GA_ID }}
           VITE_KOFI_HANDLE: ${{ vars.VITE_KOFI_HANDLE }}
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+      # Deploy only once Firebase is configured; otherwise skip so CI stays green.
+      - name: Deploy to Firebase preview channel
+        if: ${{ env.FIREBASE_SERVICE_ACCOUNT != '' }}
+        uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
