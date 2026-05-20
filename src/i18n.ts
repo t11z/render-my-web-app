@@ -29,6 +29,11 @@ const DICTS: Record<Locale, Record<string, string>> = {
 
 const STORAGE_KEY = 'rmwa.locale'
 let current: Locale = 'en'
+const changeListeners: Array<() => void> = []
+
+export function onLocaleChange(listener: () => void): void {
+  changeListeners.push(listener)
+}
 
 function detect(): Locale {
   try {
@@ -67,6 +72,7 @@ export function setLocale(locale: Locale): void {
     /* ignore storage errors */
   }
   apply()
+  for (const listener of changeListeners) listener()
 }
 
 export function apply(): void {
