@@ -63,13 +63,17 @@ jobs:
               OPEN or CLOSED — do NOT open a duplicate issue and do NOT re-fix it.
               A closed issue means it was resolved or deliberately rejected; leave
               it alone.
-            - EXCEPTION: an OPEN `security` issue with NO assignee is fair game —
-              you MAY adopt it and open a fix PR for it (link via "Fixes #<n>");
-              do not create a new duplicate issue for it.
-            - An OPEN `security` issue that ALREADY has an assignee: skip it
-              (someone is working on it).
-            - If an open PR already addresses a finding/issue, skip it (no
-              duplicate PR).
+            - An OPEN `security` issue is "adoptable" ONLY if ALL of these hold:
+              it has no assignee, it has no `security:in-progress` label, and no
+              open PR is already linked to it. You MAY adopt such an issue and open
+              a fix PR for it (link via "Fixes #<n>"); do not create a duplicate
+              issue for it.
+            - Otherwise SKIP the open issue — an assignee, a `security:in-progress`
+              label, or an existing open linked PR all mean someone (a human, or a
+              previous agent run) is already on it.
+            - Note: GitHub does not allow assigning issues to `github-actions[bot]`,
+              so mark your own in-progress work with the `security:in-progress`
+              label instead (see Output), not via an assignee.
 
             ## Tasks — do BOTH static and dynamic analysis
             1) STATIC analysis:
@@ -128,6 +132,9 @@ jobs:
                - Open the PR with `gh pr create`, label it `security`, and LINK it
                  to the relevant issue with a closing keyword (e.g. "Fixes #<n>") —
                  the new issue from step 1 OR the adopted existing issue.
+               - Then add the `security:in-progress` label to that issue so future
+                 runs don't re-adopt it (create the label if missing, e.g.
+                 `gh label create security:in-progress --color FBCA04 || true`).
             - Be precise and avoid false positives; this app intentionally runs
               untrusted code inside the sandbox — that is by design, not a bug.
 
