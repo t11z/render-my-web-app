@@ -103,13 +103,11 @@ help! 💜 Bug reports, translations, features, docs… all appreciated. See
 
 ## 💖 Support
 
-If this is useful to you, consider buying us a coffee on **Ko-fi** ☕ (configure
-your handle via `VITE_KOFI_HANDLE`).
+If this is useful to you, consider buying us a coffee on **Ko-fi** ☕
 
 ## 📄 Legal & License
 
 Licensed under the [MIT License](./LICENSE). All bundled dependencies are MIT —
 their notices are reproduced in [THIRD-PARTY-NOTICES.md](./THIRD-PARTY-NOTICES.md)
 (regenerate with `npm run notices`). The app ships template `Impressum`
-(`impressum.html`) and privacy (`privacy.html`) pages — **please have them
-reviewed by a professional before going live.**
+(`impressum.html`) and privacy (`privacy.html`) pages.
