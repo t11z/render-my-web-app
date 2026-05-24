@@ -25,7 +25,6 @@ jobs:
       - run: npm ci
       - run: npm run build
         env:
-          VITE_GA_ID: ${{ vars.VITE_GA_ID }}
           VITE_KOFI_HANDLE: ${{ vars.VITE_KOFI_HANDLE }}
       # Deploy only once Firebase is configured; otherwise skip so CI stays green.
       - name: Deploy to Firebase preview channel

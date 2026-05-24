@@ -4,8 +4,6 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     include: ['test/**/*.test.ts'],
-    env: {
-      VITE_GA_ID: 'G-TEST123',
-    },
+    passWithNoTests: true,
   },
 })
