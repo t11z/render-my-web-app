@@ -309,47 +309,6 @@ body.preview-maximized .console {
   color: #ff5e5b;
 }
 
-/* Cookie banner */
-.cookie-banner {
-  position: fixed;
-  inset: auto 1rem 1rem 1rem;
-  max-width: 520px;
-  margin-inline: auto;
-  background: var(--bg-elev);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1rem;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
-  z-index: 10;
-}
-
-.cookie-banner p {
-  margin: 0 0 0.75rem;
-  color: var(--text-dim);
-}
-
-.cookie-banner .actions {
-  display: flex;
-  gap: 0.5rem;
-  justify-content: flex-end;
-}
-
-.cookie-banner button {
-  font: inherit;
-  border-radius: var(--radius);
-  padding: 0.4rem 0.9rem;
-  cursor: pointer;
-  border: 1px solid var(--border);
-  background: var(--bg-input);
-  color: var(--text);
-}
-
-.cookie-banner button[data-consent='accept'] {
-  background: var(--accent);
-  color: var(--accent-text);
-  border-color: var(--accent);
-}
-
 /* Legal pages */
 .legal {
   max-width: 760px;

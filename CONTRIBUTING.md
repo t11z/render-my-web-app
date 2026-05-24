@@ -51,8 +51,6 @@ src/
   share.ts         Compressed URL-fragment encode/decode
   theme.ts         Dark/light theme
   download.ts      Download .html / open in new tab
-  analytics.ts     GA4 + Consent Mode v2 (strips the URL fragment)
-  cookieBanner.ts  EU opt-in consent banner
   i18n.ts          Tiny i18n module (detection, switching, DOM apply)
   locales/         One JSON dictionary per language
 test/              Vitest tests
@@ -60,10 +58,9 @@ test/              Vitest tests
 
 ## 🧪 A note on privacy-sensitive code
 
-The "Zero Knowledge" promise is core to this project. If you touch
-`analytics.ts`, `share.ts`, or the preview sandbox, please keep
-`test/analytics.test.ts` green — it proves the user's code is never sent to
-Google. Add tests when you change this behavior.
+The "Zero Knowledge" promise is core to this project. If you touch `share.ts` or
+the preview sandbox, make sure the user's code stays entirely client-side and is
+never sent to any server. Add tests when you change this behavior.
 
 ## 🎨 Code style
 

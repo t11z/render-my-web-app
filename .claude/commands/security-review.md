@@ -15,8 +15,7 @@ review of THIS repository against the OWASP Top 10 (2021).
   - Security headers / CSP are defined in `firebase.json`.
   - User content is kept only client-side: `localStorage` and the URL fragment
     (`#code=`, lz-string compressed). See `src/share.ts`, `src/storage.ts`.
-  - Optional Google Analytics is consent-gated and strips the URL fragment from
-    `page_location`. See `src/analytics.ts`, `src/cookieBanner.ts`.
+  - There is no analytics or tracking; no usage data leaves the browser.
 
 ## Step 0 — triage existing work (do this FIRST)
 Before analysing anything, list prior security work so you never re-report or

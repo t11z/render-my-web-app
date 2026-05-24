@@ -3,8 +3,6 @@ import '@fontsource-variable/inter'
 import { applyIcons, setIcon } from './icons'
 import { initI18n, apply as applyI18n, mountLanguageSelect, t } from './i18n'
 import { initTheme, toggleTheme, isDark } from './theme'
-import { initConsentDefaults } from './analytics'
-import { initCookieBanner } from './cookieBanner'
 import { createEditor } from './editor'
 import { createPreview } from './preview'
 import { initConsole, clearConsole } from './consolePanel'
@@ -21,7 +19,6 @@ function byId<T extends HTMLElement>(id: string): T {
 
 initI18n()
 initTheme()
-initConsentDefaults()
 
 const iframe = byId<HTMLIFrameElement>('preview')
 const consoleList = byId('console-list')
@@ -122,5 +119,4 @@ if (kofiHandle) {
 applyIcons()
 mountLanguageSelect(byId<HTMLSelectElement>('lang-select'))
 applyI18n()
-initCookieBanner()
 editor.focus()

@@ -18,10 +18,8 @@ This is the whole point of the project:
 - 🧱 **Sandboxed preview.** Your code runs in an `<iframe sandbox="allow-scripts">`
   **without** `allow-same-origin`, so it gets an opaque origin and cannot read the
   app's storage, cookies, or DOM.
-- 📊 **Analytics is opt-in.** Google Analytics only loads after you accept the
-  cookie banner, and even then the URL fragment is stripped — so your code is
-  never sent to Google. There's a test that proves it
-  (`test/analytics.test.ts`).
+- 🚫 **No tracking.** No analytics, no third-party trackers, no tracking cookies —
+  nothing about your usage is collected.
 
 ## ✨ Features
 
@@ -50,13 +48,12 @@ npm run build      # type-check + production build into dist/
 npm run preview    # serve the production build locally
 npm run lint       # ESLint
 npm run typecheck  # tsc --noEmit
-npm test           # Vitest (incl. the "no code reaches Google" test)
+npm test           # Vitest
 ```
 
 Optional configuration — copy `.env.example` to `.env`:
 
 ```bash
-VITE_GA_ID=          # GA4 Measurement ID (G-XXXX). Empty = analytics + banner disabled.
 VITE_KOFI_HANDLE=    # Ko-fi handle for the donate link. Empty = link hidden.
 ```
 
@@ -87,7 +84,7 @@ One-time setup:
    `firebase-hosting-*.yml` workflows.
 3. Create a service account and add its JSON as the GitHub secret
    `FIREBASE_SERVICE_ACCOUNT`.
-4. (Optional) Add repository **variables** `VITE_GA_ID` and `VITE_KOFI_HANDLE`.
+4. (Optional) Add the repository **variable** `VITE_KOFI_HANDLE`.
 
 Until `FIREBASE_SERVICE_ACCOUNT` is set, the deploy step is **skipped** (so CI
 stays green); it activates automatically once the secret exists. Then:
@@ -109,5 +106,5 @@ If this is useful to you, consider buying us a coffee on **Ko-fi** ☕
 
 Licensed under the [MIT License](./LICENSE). All bundled dependencies are MIT —
 their notices are reproduced in [THIRD-PARTY-NOTICES.md](./THIRD-PARTY-NOTICES.md)
-(regenerate with `npm run notices`). The app ships template `Impressum`
-(`impressum.html`) and privacy (`privacy.html`) pages.
+(regenerate with `npm run notices`). The app ships a generic Privacy & Security
+page (`privacy.html`) explaining the zero-knowledge model.
