@@ -29,7 +29,7 @@ jobs:
       - run: npm ci
 
       - name: Claude security review (OWASP Top 10)
-        uses: anthropics/claude-code-action@20c8abf165d5f85ab3fc970db9498436377dc9d1 # v1.0.128
+        uses: anthropics/claude-code-action@70a6e5256e9e2366a1ed5c041904a982ba3a328f # v1.0.135
         env:
           # Authenticates the `gh` CLI the agent uses to file the issue / fix PR.
           GH_TOKEN: ${{ github.token }}
